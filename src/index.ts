@@ -1,0 +1,1 @@
+export { default as OtpWidget } from "@/components/otp-widget.vue";
