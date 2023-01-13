@@ -8,10 +8,20 @@ const otp: Ref<string> = ref("");
 
 <template>
   <main>
-    <otp-widget  @code="otp = $event" :childs="6" />
+    <div>
+      <otp-widget  @code="otp = $event" :childs="6" />
+    </div>
   </main>
 </template>
 
 <style scoped lang="scss">
 //
+main {
+  height: 100vh;
+  widows: 100vw;
+
+  :deep(.widget-otp-parent) {
+    //
+  }
+}
 </style>

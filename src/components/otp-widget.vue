@@ -43,19 +43,18 @@
 <script setup lang="ts">
 export interface Props {
   childs?: number;
-  type?: string;
+  type?: "number" | "text";
 }
 
 import {
   ref,
   watch,
-  onMounted,
   // getCurrentInstance,
   toRef
 } from "vue";
 import type { Ref } from "vue";
 
-const props = withDefault(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   childs: 4,
   type: "number"
 });
@@ -68,19 +67,25 @@ const code: Ref<string[]> = ref([]);
 const countInput: Ref<number> = toRef(props, 'childs')
 const type: Ref<string> = toRef(props, 'type')
 
-const targetIndex = (elm) => [...elm.parentNode.children].indexOf(elm);
-const clearedToFocus = ({ target }) => (target.value = String(target.value)[0] || '');
+const targetIndex = (elm: HTMLElement): number => {
+  const parentChilds: HTMLCollection = (elm.parentNode as HTMLElement).children;
+  return [...Array.from(parentChilds)].indexOf(elm);
+};
+const clearedToFocus = (event: Event): void => {
+  const target = (event.target as HTMLInputElement);
+  (target.value = String(target.value)[0] || '');
+};
 
-const checkEvent = (event) => {
+const checkEvent = (event: KeyboardEvent): void => {
   event.preventDefault();
   event.stopPropagation();
   //
-  const that = event.target;
+  const that: HTMLInputElement = event.target as HTMLInputElement;
   const index = targetIndex(that);
   const isNumber = /^\d$/i.test(event.key) && type.value === 'number';
   const isText = /(^\D)|(^\d)$/i.test(event.key) && type.value === 'text';
-  const nextSibling = parent.value.children[index + 1];
-  const prevSibling = parent.value.children[index - 1];
+  const nextSibling: HTMLInputElement = (parent.value as HTMLElement).children[index + 1] as HTMLInputElement;
+  const prevSibling: HTMLInputElement = (parent.value as HTMLElement).children[index - 1] as HTMLInputElement;
 
   if (event.key !== "Backspace" && (isNumber || isText)) {
     code.value.push(String(that.value));
@@ -98,13 +103,13 @@ const checkEvent = (event) => {
 watch(code, () => {
   const codeLength = code.value.length;
   const sendCode = code.value.join("");
-  if (codeLength === countInput.value) context.emit("code", sendCode);
-  else if (codeLength === 0) context.emit("code", sendCode);
+  if (codeLength === countInput.value) emit("code", sendCode);
+  else if (codeLength === 0) emit("code", sendCode);
 }, {deep: true});
 
-const codePasted = (e) => {
-  const codep = String(e.clipboardData.getData('Text')).trim();
-  const ins = parent.value.querySelectorAll("input");
+const codePasted = (e: ClipboardEvent): void => {
+  const codep = String((e.clipboardData as DataTransfer).getData('Text')).trim();
+  const ins = (parent.value as HTMLElement).querySelectorAll("input");
   if(codep && /^[0-9]*$/.test(codep) && codep.length === countInput.value) {
     ins.forEach((node, index)=>{
       node.value = codep[index];
@@ -115,7 +120,8 @@ const codePasted = (e) => {
 };
 
 defineExpose({
-  code
+  code,
+  parent
 });
 </script>
 

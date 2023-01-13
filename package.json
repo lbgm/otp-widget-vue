@@ -31,6 +31,7 @@
     }
   },
   "dependencies": {
+    "sass": "^1.57.1",
     "vue": "^3.2.45"
   },
   "devDependencies": {
