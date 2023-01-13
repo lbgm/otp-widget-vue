@@ -1,7 +1,8 @@
 <template>
   <div
     ref="parent"
-    class="widget-otp-parent otp-gap-16"
+    class="widget-otp-parent"
+    :class="{ [gap]: true }"
     data-widget="widget-otp-parent"
   >
     <template v-if="type === 'number'">
@@ -17,6 +18,7 @@
         autocomplete="off"
         spellcheck="false"
         inputmode="decimal"
+        :placeholder="placeholder"
         @keyup="checkEvent"
         @input="clearedToFocus"
         @paste="codePasted"
@@ -34,6 +36,7 @@
         spellcheck="false"
         @keyup="checkEvent"
         @input="clearedToFocus"
+        :placeholder="placeholder"
         @paste="codePasted"
       />
     </template>
@@ -44,6 +47,8 @@
 export interface Props {
   childs?: number;
   type?: "number" | "text";
+  placeholder?: string;
+  gap?: "otp-gap-1" | "otp-gap-2" | "otp-gap-3" | "otp-gap-4" | "otp-gap-5" | "otp-gap-6" | "otp-gap-7" | "otp-gap-8" | "otp-gap-9" | "otp-gap-10" | "otp-gap-11" | "otp-gap-12" | "otp-gap-13" | "otp-gap-14" | "otp-gap-15" | "otp-gap-16" | "otp-gap-17" | "otp-gap-18" | "otp-gap-19" | "otp-gap-20" | "otp-gap-21" | "otp-gap-22" | "otp-gap-23" | "otp-gap-24" | "otp-gap-25" | "otp-gap-26" | "otp-gap-27" | "otp-gap-28" | "otp-gap-29" | "otp-gap-30" | "otp-gap-31" | "otp-gap-32" | "otp-gap-33" | "otp-gap-34" | "otp-gap-35" | "otp-gap-36" | "otp-gap-37" | "otp-gap-38" | "otp-gap-39" | "otp-gap-40" | "otp-gap-41" | "otp-gap-42" | "otp-gap-43" | "otp-gap-44" | "otp-gap-45" | "otp-gap-46" | "otp-gap-47" | "otp-gap-48";
 }
 
 import {
@@ -56,10 +61,12 @@ import type { Ref } from "vue";
 
 const props = withDefaults(defineProps<Props>(), {
   childs: 4,
-  type: "number"
+  type: "number",
+  placeholder: "",
+  gap: "otp-gap-16"
 });
 
-const emit = defineEmits(["code"]);
+const emit = defineEmits(["code", "filled"]);
 
 //const otpWidget = getCurrentInstance();
 const parent: Ref<HTMLElement | null> = ref(null);
@@ -103,7 +110,10 @@ const checkEvent = (event: KeyboardEvent): void => {
 watch(code, () => {
   const codeLength = code.value.length;
   const sendCode = code.value.join("");
-  if (codeLength === countInput.value) emit("code", sendCode);
+  if (codeLength === countInput.value) {
+    emit("code", sendCode);
+    emit("filled");
+  }
   else if (codeLength === 0) emit("code", sendCode);
 }, {deep: true});
 
@@ -120,7 +130,6 @@ const codePasted = (e: ClipboardEvent): void => {
 };
 
 defineExpose({
-  code,
   parent
 });
 </script>
@@ -146,8 +155,8 @@ defineExpose({
 @-moz-document url-prefix()/*firefox*/
 {
   input[type="number"] {
-    max-width: 52px;
-    padding: 16px 0;
+    max-width: 24px;
+    padding: 12px 0;
   }
 }
 
@@ -169,8 +178,8 @@ div[data-widget="widget-otp-parent"] {
       -moz-appearance: textfield; //Firefox
     }
     &[type="text"] {
-      max-width: 52px;
-      padding: 16px 0;
+      max-width: 24px;
+      padding: 12px 0;
     }
     border: 0;
     outline: none;
@@ -180,9 +189,9 @@ div[data-widget="widget-otp-parent"] {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    padding: 16px;
-    border: 2px solid gray;
-    border-radius: 6px;
+    padding: 12px;
+    border: 1px solid gray;
+    border-radius: 3px;
     text-align: center;
     cursor: pointer;
 

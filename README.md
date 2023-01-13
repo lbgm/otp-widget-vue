@@ -1,46 +1,61 @@
 # otp-widget-vue
+OTP code input widget for Vue 3
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
+## install
 ```sh
-npm install
+npm i @lbgm/otp-widget-vue
 ```
 
-### Compile and Hot-Reload for Development
+## Props
+  Interface:
+  ```ts
+  interface Props {
+    childs?: number;
+    type?: "number" | "text";
+    placeholder?: string;
+    flexGap?: "otp-gap-1" | "otp-gap-2" | "otp-gap-3" | "otp-gap-4" | "otp-gap-5" | "otp-gap-6" | "otp-gap-7" | "otp-gap-8" | "otp-gap-9" | "otp-gap-10" | "otp-gap-11" | "otp-gap-12" | "otp-gap-13" | "otp-gap-14" | "otp-gap-15" | "otp-gap-16" | "otp-gap-17" | "otp-gap-18" | "otp-gap-19" | "otp-gap-20" | "otp-gap-21" | "otp-gap-22" | "otp-gap-23" | "otp-gap-24" | "otp-gap-25" | "otp-gap-26" | "otp-gap-27" | "otp-gap-28" | "otp-gap-29" | "otp-gap-30" | "otp-gap-31" | "otp-gap-32" | "otp-gap-33" | "otp-gap-34" | "otp-gap-35" | "otp-gap-36" | "otp-gap-37" | "otp-gap-38" | "otp-gap-39" | "otp-gap-40" | "otp-gap-41" | "otp-gap-42" | "otp-gap-43" | "otp-gap-44" | "otp-gap-45" | "otp-gap-46" | "otp-gap-47" | "otp-gap-48";
+ }
+  ```
 
-```sh
-npm run dev
-```
+ Default values:
+ ```js
+ {
+  childs: 4,
+  type: "number",
+  placeholder: "",
+  flexGap: "otp-gap-16"
+ }
+ ```
 
-### Type-Check, Compile and Minify for Production
+ ## Events
+ `code`: sends value filled as `string`;
 
-```sh
-npm run build
-```
+ `filled`: when all inputs are filled;
 
-### Lint with [ESLint](https://eslint.org/)
+## Use
+ main.ts :
+ ```js
+  import { OtpWidget } from '@lbgm/otp-widget-vue';
 
-```sh
-npm run lint
-```
+  // register as global component
+  app.component('OtpWidget', OtpWidget);
+ ```
+ App.vue :
+ ```js
+ // import component style
+ import '@lbgm/otp-widget-vue/style';
+
+ import { ref } from "vue";
+ import type { Ref } from "vue";
+
+ const otp: Ref<string> = ref("");
+ ```
+
+ use component:
+ ```html
+    <otp-widget @filled="void 0" @code="otp = $event" />
+ ```
+
+ ```js
+  console.log(otp) : 8842
+ ```
