@@ -10,7 +10,7 @@ const otp: Ref<string> = ref("");
   <main>
     <div class="otp-container">
       <span class="log">{{ otp }}</span>
-      <otp-widget @filled="void 0" @code="otp = $event" :childs="4" placeholder="" :gap="'otp-gap-16'" />
+      <otp-widget @filled="void 0" @code="otp = $event" :childs="4" placeholder="" :gap="'otp-gap-16'" type="number" />
     </div>
   </main>
 </template>

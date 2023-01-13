@@ -120,12 +120,14 @@ watch(code, () => {
 const codePasted = (e: ClipboardEvent): void => {
   const codep = String((e.clipboardData as DataTransfer).getData('Text')).trim();
   const ins = (parent.value as HTMLElement).querySelectorAll("input");
-  if(codep && /^[0-9]*$/.test(codep) && codep.length === countInput.value) {
-    ins.forEach((node, index)=>{
-      node.value = codep[index];
-      code.value.push(String(codep[index]));
-      node.focus();
-    })
+  if(codep  && codep.length === countInput.value) {
+    if( (type.value === "text" && /^[a-zA-Z0-9]*$/.test(codep)) || (type.value === "number" && /^[0-9]*$/.test(codep))) {
+      ins.forEach((node, index)=>{
+        node.value = codep[index];
+        code.value.push(String(codep[index]));
+        node.focus();
+      })
+    }
   }
 };
 
@@ -178,7 +180,7 @@ div[data-widget="widget-otp-parent"] {
       -moz-appearance: textfield; //Firefox
     }
     &[type="text"] {
-      max-width: 24px;
+      max-width: 36px;
       padding: 12px 0;
     }
     border: 0;
