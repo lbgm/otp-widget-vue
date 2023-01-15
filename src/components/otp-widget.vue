@@ -120,7 +120,7 @@ watch(code, () => {
 const codePasted = (e: ClipboardEvent): void => {
   const codep = String((e.clipboardData as DataTransfer).getData('Text')).trim();
   const ins = (parent.value as HTMLElement).querySelectorAll("input");
-  if(codep  && codep.length === countInput.value) {
+  if(codep && codep.length === countInput.value) {
     if( (type.value === "text" && /^[a-zA-Z0-9]*$/.test(codep)) || (type.value === "number" && /^[0-9]*$/.test(codep))) {
       ins.forEach((node, index)=>{
         node.value = codep[index];
