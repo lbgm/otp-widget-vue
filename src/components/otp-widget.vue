@@ -114,8 +114,8 @@ watch(code, () => {
     emit("code", sendCode);
     emit("filled");
   }
-  else if (codeLength === 0) emit("code", sendCode);
-}, {deep: true});
+  else if (codeLength === 0) emit("code", "");
+}, { deep: true });
 
 const codePasted = (e: ClipboardEvent): void => {
   const codep = String((e.clipboardData as DataTransfer).getData('Text')).trim();
